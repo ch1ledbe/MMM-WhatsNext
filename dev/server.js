@@ -10,7 +10,7 @@ const path = require("path");
 const Module = require("module");
 
 const PORT = Number(process.argv[2]) || 8090;
-const LANGUAGE = process.argv[3] || "de";
+const LANGUAGE = process.argv[3] || "en";
 const ROOT = path.resolve(__dirname, "..");
 const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json" };
 

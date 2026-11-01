@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "node --test test/",
-    "preview": "node dev/server.js 8090 de"
+    "preview": "node dev/server.js 8090 en"
   },
   "keywords": [
     "MagicMirror",

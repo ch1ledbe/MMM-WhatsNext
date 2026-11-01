@@ -1,23 +1,23 @@
 # MMM-WhatsNext
 
-Ein [MagicMirror²](https://magicmirror.builders/)-Modul, das anstehende Ereignisse mit Countdown anzeigt – Geburtstage, Ferien, Termine, Jubiläen. Die Ereignisse werden bequem über eine **Weboberfläche** (z. B. vom Handy aus) verwaltet, ganz ohne `config.js` anzufassen.
+A [MagicMirror²](https://magicmirror.builders/) module that shows upcoming events with a countdown – birthdays, holidays, appointments, anniversaries. Events are managed through a **web interface** (e.g. from your phone), without touching `config.js`.
 
-**Sprachen:** Deutsch, Englisch, Französisch, Italienisch (Spiegel und Weboberfläche).
+**Languages:** German, English, French, Italian (mirror and web interface).
 
-![Anzeige auf dem Spiegel](images/screenshot.png)
+![Display on the mirror](images/screenshot.png)
 
-![Weboberfläche](images/web-config.png)
+![Web interface](images/web-config.png)
 
-## Funktionen
+## Features
 
-- Liste der nächsten Ereignisse mit Symbol, Farbe, Datum und Countdown
-- Drei Countdown-Formate: automatisch (`morgen`, `in 3 Tagen`, `in 2 Std. 15 Min.`), nur Tage (große Zahl), detailliert (`2 T 04:15:09`)
-- Ganztägige und zeitgebundene Ereignisse; „Jetzt“-Anzeige während eines laufenden Termins
-- Wiederholung: wöchentlich, monatlich, jährlich (inkl. 29. Februar / 31. des Monats)
-- Optional Anzahl Jahre anzeigen (z. B. „Anna wird 40“)
-- Ereignisse ausblenden, ohne sie zu löschen
-- Weboberfläche unter `http://<spiegel>:8080/whatsnext`, Änderungen erscheinen sofort auf dem Spiegel
-- Optionaler Zugriffsschutz per Token
+- List of upcoming events with icon, color, date and countdown
+- Three countdown formats: automatic (`tomorrow`, `in 3 days`, `in 2 h 15 min`), days only (large number), detailed (`2 d 04:15:09`)
+- All-day and timed events; "now" is shown while an event is running
+- Repetition: weekly, monthly, yearly (handles 29 February and the 31st of a month)
+- Optionally show the number of years (e.g. "Anna turns 40")
+- Hide events without deleting them
+- Web interface at `http://<mirror>:8080/whatsnext`, changes appear on the mirror immediately
+- Optional access protection with a token
 
 ## Installation
 
@@ -26,7 +26,7 @@ cd ~/MagicMirror/modules
 git clone https://github.com/ch1ledbe/MMM-WhatsNext
 ```
 
-Das Modul hat keine Laufzeit-Abhängigkeiten, ein `npm install` ist nicht nötig.
+The module has no runtime dependencies, so `npm install` is not required.
 
 ## Update
 
@@ -35,9 +35,9 @@ cd ~/MagicMirror/modules/MMM-WhatsNext
 git pull
 ```
 
-Danach den MagicMirror neu starten. Gespeicherte Ereignisse in `data/` bleiben erhalten. Änderungen stehen im [CHANGELOG](CHANGELOG.md).
+Restart MagicMirror afterwards. Saved events in `data/` are kept. See the [CHANGELOG](CHANGELOG.md) for changes.
 
-## Konfiguration
+## Configuration
 
 In `~/MagicMirror/config/config.js`:
 
@@ -45,86 +45,86 @@ In `~/MagicMirror/config/config.js`:
 {
 	module: "MMM-WhatsNext",
 	position: "top_left",
-	header: "Was steht an?",
+	header: "What's next",
 	config: {
 		maxEvents: 5,
 		countdownFormat: "auto",
-		apiToken: "mein-geheimer-schluessel" // optional
+		apiToken: "my-secret-key" // optional
 	}
 },
 ```
 
-| Option | Standard | Beschreibung |
+| Option | Default | Description |
 | --- | --- | --- |
-| `maxEvents` | `5` | Maximale Anzahl angezeigter Ereignisse (`0` = alle) |
-| `maxDaysAhead` | `0` | Nur Ereignisse der nächsten _n_ Tage (`0` = alle) |
-| `countdownFormat` | `"auto"` | `"auto"`, `"days"` oder `"detailed"` |
-| `showDate` | `true` | Datum unter dem Titel anzeigen |
-| `showIcons` | `true` | Symbole anzeigen |
-| `highlightNext` | `true` | Nächstes Ereignis größer darstellen |
-| `showSeconds` | `false` | Sekunden im Format `"detailed"` |
-| `nowWindowMinutes` | `60` | Wie lange ein Termin nach Beginn als „Jetzt“ angezeigt wird |
-| `defaultIcon` | `"calendar-day"` | Symbol für Ereignisse ohne eigenes Symbol |
-| `apiToken` | `""` | Wenn gesetzt, verlangt die Weboberfläche diesen Schlüssel |
-| `events` | `[]` | Startereignisse – werden nur übernommen, solange noch nichts über die Weboberfläche gespeichert wurde |
+| `maxEvents` | `5` | Maximum number of events shown (`0` = all) |
+| `maxDaysAhead` | `0` | Only show events within the next _n_ days (`0` = all) |
+| `countdownFormat` | `"auto"` | `"auto"`, `"days"` or `"detailed"` |
+| `showDate` | `true` | Show the date below the title |
+| `showIcons` | `true` | Show icons |
+| `highlightNext` | `true` | Show the next event larger |
+| `showSeconds` | `false` | Show seconds in the `"detailed"` format |
+| `nowWindowMinutes` | `60` | How long a timed event is shown as "now" after it started |
+| `defaultIcon` | `"calendar-day"` | Icon for events without their own icon |
+| `apiToken` | `""` | If set, the web interface asks for this key |
+| `events` | `[]` | Initial events – only used as long as nothing has been saved through the web interface |
 
-Die Anzeigeoptionen (`maxEvents` bis `nowWindowMinutes`) lassen sich auch in der Weboberfläche ändern; dort gespeicherte Werte haben Vorrang vor der `config.js`.
+The display options (`maxEvents` to `nowWindowMinutes`) can also be changed in the web interface; values saved there take precedence over `config.js`.
 
-Die Anzeigesprache folgt der `language`-Einstellung des MagicMirrors. Die Sprache der Weboberfläche lässt sich oben rechts umschalten.
+The display language follows MagicMirror's `language` setting. The language of the web interface can be switched in the top right corner.
 
-### Ereignisse in der config.js (optional)
+### Events in config.js (optional)
 
 ```js
 events: [
-	{ title: "Weihnachten", date: "2026-12-24", repeat: "yearly", icon: "tree", color: "#2ecc71" },
-	{ title: "Annas Geburtstag", date: "1986-11-14", repeat: "yearly", icon: "cake-candles", showYears: true },
-	{ title: "Zahnarzt", date: "2026-11-20", time: "14:30", icon: "tooth" }
+	{ title: "Christmas", date: "2026-12-24", repeat: "yearly", icon: "tree", color: "#2ecc71" },
+	{ title: "Anna's birthday", date: "1986-11-14", repeat: "yearly", icon: "cake-candles", showYears: true },
+	{ title: "Dentist", date: "2026-11-20", time: "14:30", icon: "tooth" }
 ]
 ```
 
-Felder: `title`, `date` (`YYYY-MM-DD`), `time` (`HH:MM`, leer = ganztägig), `repeat` (`none`/`weekly`/`monthly`/`yearly`), `icon` ([Font-Awesome](https://fontawesome.com/search?o=r&m=free&s=solid)-Name), `color` (`#rrggbb`), `showYears`, `enabled`.
+Fields: `title`, `date` (`YYYY-MM-DD`), `time` (`HH:MM`, empty = all-day), `repeat` (`none`/`weekly`/`monthly`/`yearly`), `icon` ([Font Awesome](https://fontawesome.com/search?o=r&m=free&s=solid) name), `color` (`#rrggbb`), `showYears`, `enabled`.
 
-## Weboberfläche
+## Web interface
 
-Aufruf: `http://<ip-des-spiegels>:8080/whatsnext`
+Open `http://<mirror-ip>:8080/whatsnext`
 
-Damit die Seite von anderen Geräten erreichbar ist, muss der MagicMirror im Netzwerk lauschen. In der `config.js`:
+To reach the page from other devices, MagicMirror has to listen on the network. In `config.js`:
 
 ```js
 address: "0.0.0.0",
-ipWhitelist: [], // oder z. B. ["127.0.0.1", "::ffff:192.168.1.0/24"]
+ipWhitelist: [], // or e.g. ["127.0.0.1", "::ffff:192.168.1.0/24"]
 ```
 
-Die Daten liegen in `modules/MMM-WhatsNext/data/whatsnext.json` (wird bei `git pull` nicht überschrieben).
+Data is stored in `modules/MMM-WhatsNext/data/whatsnext.json` (not overwritten by `git pull`).
 
-**Sicherheit:** Ohne `apiToken` kann jeder im erlaubten Netzwerk Ereignisse ändern. Der Token schützt vor versehentlichen Änderungen, ist aber kein starker Schutz: Er wird – wie die gesamte MagicMirror-Konfiguration – an den Browser des Spiegels ausgeliefert. Die Weboberfläche nicht ins Internet freigeben.
+**Security:** Without `apiToken`, anyone on the allowed network can change events. The token protects against accidental changes but is not strong protection: like the rest of the MagicMirror configuration, it is delivered to the mirror's browser. Do not expose the web interface to the internet.
 
-Die Symbole der Weboberfläche werden von cdnjs geladen; ohne Internetzugang funktioniert die Seite weiterhin, nur ohne Symbolvorschau.
+The icons of the web interface are loaded from cdnjs; without internet access the page still works, just without icon previews.
 
-## Entwicklung
+## Development
 
 ```bash
-npm install       # nur für Entwicklung (ESLint)
-npm run lint      # Code-Stil prüfen
-npm test          # Tests der Datumslogik
-npm run preview   # Vorschau ohne MagicMirror: http://localhost:8090
+npm install       # development only (ESLint)
+npm run lint      # check code style
+npm test          # tests of the date logic
+npm run preview   # preview without MagicMirror: http://localhost:8090
 ```
 
-Die Vorschau speichert ihre Daten in `dev/data/` und berührt eine echte Installation nicht.
+The preview stores its data in `dev/data/` and does not touch a real installation.
 
 ## API
 
-| Methode | Pfad | Beschreibung |
+| Method | Path | Description |
 | --- | --- | --- |
-| `GET` | `/whatsnext/api/meta` | Status, Sprache, ob ein Token nötig ist |
-| `GET` | `/whatsnext/api/state` | Ereignisse und Einstellungen |
-| `POST` | `/whatsnext/api/events` | Ereignis anlegen |
-| `PUT` | `/whatsnext/api/events/:id` | Ereignis ersetzen |
-| `DELETE` | `/whatsnext/api/events/:id` | Ereignis löschen |
-| `PUT` | `/whatsnext/api/settings` | Anzeigeeinstellungen speichern |
+| `GET` | `/whatsnext/api/meta` | Status, language, whether a token is required |
+| `GET` | `/whatsnext/api/state` | Events and settings |
+| `POST` | `/whatsnext/api/events` | Create an event |
+| `PUT` | `/whatsnext/api/events/:id` | Replace an event |
+| `DELETE` | `/whatsnext/api/events/:id` | Delete an event |
+| `PUT` | `/whatsnext/api/settings` | Save display settings |
 
-Bei gesetztem `apiToken` muss der Header `X-WhatsNext-Token` mitgeschickt werden.
+If `apiToken` is set, the header `X-WhatsNext-Token` must be sent.
 
-## Lizenz
+## License
 
 [MIT](LICENSE)
