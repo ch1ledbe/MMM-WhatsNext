@@ -1,0 +1,99 @@
+.whatsnext table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.whatsnext .wn-row {
+  --wn-color: #fff;
+}
+
+.whatsnext .wn-row td {
+  padding: 4px 0;
+  vertical-align: middle;
+  line-height: 1.2;
+}
+
+.whatsnext .wn-icon {
+  width: 1.6em;
+  padding-right: 10px !important;
+  color: var(--wn-color);
+  text-align: center;
+}
+
+.whatsnext .wn-main {
+  text-align: left;
+  padding-right: 20px !important;
+}
+
+.whatsnext .wn-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 18em;
+}
+
+.whatsnext .wn-years {
+  display: inline-block;
+  margin-left: 0.5em;
+  padding: 0 0.4em;
+  border: 1px solid var(--wn-color);
+  border-radius: 0.6em;
+  font-size: 0.7em;
+  line-height: 1.4;
+  vertical-align: middle;
+  color: var(--wn-color);
+}
+
+.whatsnext .wn-countdown {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.whatsnext .wn-days .wn-num {
+  font-size: 1.4em;
+  font-weight: 400;
+}
+
+.whatsnext .wn-days .wn-label {
+  display: block;
+  margin-top: -2px;
+}
+
+.whatsnext .wn-detailed {
+  font-variant-numeric: tabular-nums;
+}
+
+.whatsnext .wn-now {
+  color: var(--wn-color);
+  font-weight: 600;
+}
+
+/* Highlighted next event */
+.whatsnext .wn-next td {
+  padding-bottom: 10px;
+}
+
+.whatsnext .wn-next .wn-icon {
+  font-size: 1.5em;
+}
+
+.whatsnext .wn-next .wn-title {
+  font-size: 1.25em;
+}
+
+.whatsnext .wn-next .wn-countdown {
+  color: #fff;
+  font-size: 1.15em;
+}
+
+.whatsnext .wn-row:not(.wn-next) {
+  opacity: 0.85;
+}
+
+.whatsnext .wn-running .wn-icon i {
+  animation: wn-pulse 2s ease-in-out infinite;
+}
+
+@keyframes wn-pulse {
+  50% { opacity: 0.4; }
+}

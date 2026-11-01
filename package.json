@@ -1,0 +1,39 @@
+{
+  "name": "mmm-whatsnext",
+  "version": "1.0.0",
+  "description": "MagicMirror² module that shows upcoming events with a countdown, configurable through a web interface.",
+  "main": "MMM-WhatsNext.js",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "node --test test/",
+    "preview": "node dev/server.js 8090 de"
+  },
+  "keywords": [
+    "MagicMirror",
+    "MagicMirror²",
+    "module",
+    "countdown",
+    "events",
+    "web configuration"
+  ],
+  "author": "Bernhard Ledermann",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ch1ledbe/MMM-WhatsNext.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ch1ledbe/MMM-WhatsNext/issues"
+  },
+  "homepage": "https://github.com/ch1ledbe/MMM-WhatsNext#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0"
+  }
+}

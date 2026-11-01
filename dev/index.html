@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MMM-WhatsNext preview</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap">
+  <link rel="stylesheet" href="/modules/MMM-WhatsNext/MMM-WhatsNext.css">
+  <style>
+    /* subset of MagicMirror's main.css */
+    body { margin: 0; padding: 40px; background: #000; color: #aaa; font-family: "Roboto Condensed", sans-serif; font-weight: 400; font-size: 2em; line-height: 1.5em; }
+    .module { width: 460px; }
+    header { text-transform: uppercase; font-size: 15px; line-height: 15px; border-bottom: 1px solid #666; padding-bottom: 5px; margin-bottom: 10px; color: #999; }
+    .xsmall { font-size: 15px; line-height: 20px; }
+    .small { font-size: 20px; line-height: 25px; }
+    .bright { color: #fff; }
+    .dimmed { color: #666; }
+    .light { font-weight: 300; }
+    .devnote { position: fixed; bottom: 12px; left: 40px; font-size: 13px; color: #555; }
+    .devnote a { color: #888; }
+  </style>
+</head>
+<body>
+  <div class="module">
+    <header>What's next</header>
+    <div id="module"></div>
+  </div>
+  <div class="devnote">Preview · <a href="/whatsnext" target="_blank">open web configuration</a></div>
+
+  <script src="/dev/config.js"></script>
+  <script>
+    if (location.search.includes("screenshot")) document.querySelector(".devnote").remove();
+    window.Log = console;
+    window.Module = { register (name, definition) { window.__module = { name, definition }; } };
+  </script>
+  <script src="/modules/MMM-WhatsNext/core.js"></script>
+  <script src="/modules/MMM-WhatsNext/MMM-WhatsNext.js"></script>
+  <script>
+    (async function () {
+      const { name, definition } = window.__module;
+      const container = document.getElementById("module");
+      const coreTranslations = { LOADING: "Loading …" };
+      const file = definition.getTranslations()[config.language] || "translations/en.json";
+      const translations = Object.assign(coreTranslations, await fetch(`/modules/${name}/${file}`).then((r) => r.json()));
+
+      const mod = Object.assign(Object.create(definition), {
+        name,
+        identifier: "module_0_" + name,
+        config: Object.assign({}, definition.defaults),
+        file: (f) => `/modules/${name}/${f}`,
+        translate (key, vars) {
+          let text = translations[key] !== undefined ? translations[key] : key;
+          if (vars && typeof vars === "object") for (const [k, v] of Object.entries(vars)) text = text.split(`{${k}}`).join(v);
+          return text;
+        },
+        updateDom () { container.replaceChildren(mod.getDom()); },
+        sendSocketNotification (notification, payload) {
+          fetch("/dev/socket", { method: "POST", body: JSON.stringify({ notification, payload }) });
+        }
+      });
+
+      let last = "";
+      async function poll () {
+        const msg = await fetch("/dev/socket").then((r) => r.json()).catch(() => null);
+        const raw = JSON.stringify(msg);
+        if (msg && raw !== last) {
+          last = raw;
+          mod.socketNotificationReceived(msg.notification, msg.payload);
+        }
+      }
+      mod.start();
+      mod.updateDom();
+      setInterval(poll, 1500);
+    })();
+  </script>
+</body>
+</html>

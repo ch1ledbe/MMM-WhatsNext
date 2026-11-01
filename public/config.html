@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WhatsNext</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="config.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1><i class="fa-solid fa-hourglass-half"></i> <span data-i18n="UI_TITLE">WhatsNext</span></h1>
+    <label class="lang">
+      <span class="sr-only" data-i18n="UI_LANGUAGE">Language</span>
+      <select id="lang-select">
+        <option value="de">Deutsch</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="it">Italiano</option>
+      </select>
+    </label>
+  </header>
+
+  <main>
+    <div id="banner" class="banner" hidden></div>
+
+    <section class="card">
+      <div class="section-head">
+        <h2 data-i18n="UI_EVENTS">Events</h2>
+        <button id="add-btn" class="btn primary" type="button"><i class="fa-solid fa-plus"></i> <span data-i18n="UI_ADD">Add event</span></button>
+      </div>
+      <ul id="event-list" class="event-list"></ul>
+      <p id="empty" class="empty" data-i18n="UI_NO_EVENTS" hidden>No events yet.</p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="UI_SETTINGS">Display</h2>
+      <form id="settings-form" class="settings">
+        <label class="field">
+          <span data-i18n="UI_SET_FORMAT">Countdown format</span>
+          <select name="countdownFormat">
+            <option value="auto" data-i18n="UI_FORMAT_AUTO">Automatic</option>
+            <option value="days" data-i18n="UI_FORMAT_DAYS">Days only</option>
+            <option value="detailed" data-i18n="UI_FORMAT_DETAILED">Detailed</option>
+          </select>
+        </label>
+        <label class="field">
+          <span data-i18n="UI_SET_MAX_EVENTS">Maximum number of events</span>
+          <input type="number" name="maxEvents" min="0" max="100" required>
+        </label>
+        <label class="field">
+          <span data-i18n="UI_SET_MAX_DAYS">Only show the next … days</span>
+          <input type="number" name="maxDaysAhead" min="0" max="3650" required>
+        </label>
+        <label class="field">
+          <span data-i18n="UI_SET_NOW_WINDOW">Show "now" for … minutes</span>
+          <input type="number" name="nowWindowMinutes" min="0" max="1440" required>
+        </label>
+        <label class="check"><input type="checkbox" name="showDate"> <span data-i18n="UI_SET_SHOW_DATE">Show date</span></label>
+        <label class="check"><input type="checkbox" name="showIcons"> <span data-i18n="UI_SET_SHOW_ICONS">Show icons</span></label>
+        <label class="check"><input type="checkbox" name="highlightNext"> <span data-i18n="UI_SET_HIGHLIGHT">Highlight next event</span></label>
+        <label class="check"><input type="checkbox" name="showSeconds"> <span data-i18n="UI_SET_SECONDS">Show seconds</span></label>
+        <div class="actions">
+          <button class="btn primary" type="submit"><i class="fa-solid fa-floppy-disk"></i> <span data-i18n="UI_SAVE_SETTINGS">Save settings</span></button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <dialog id="event-dialog">
+    <form id="event-form" method="dialog">
+      <h2 id="event-dialog-title"></h2>
+      <label class="field">
+        <span data-i18n="UI_FIELD_TITLE">Title</span>
+        <input type="text" name="title" maxlength="100" required autocomplete="off">
+      </label>
+      <div class="row">
+        <label class="field">
+          <span data-i18n="UI_FIELD_DATE">Date</span>
+          <input type="date" name="date" required>
+        </label>
+        <label class="field">
+          <span data-i18n="UI_FIELD_TIME">Time</span>
+          <input type="time" name="time">
+        </label>
+      </div>
+      <p class="hint" data-i18n="UI_FIELD_TIME_HINT">Leave empty for all-day events</p>
+      <label class="field">
+        <span data-i18n="UI_FIELD_REPEAT">Repeat</span>
+        <select name="repeat">
+          <option value="none" data-i18n="UI_REPEAT_NONE">None</option>
+          <option value="weekly" data-i18n="UI_REPEAT_WEEKLY">Weekly</option>
+          <option value="monthly" data-i18n="UI_REPEAT_MONTHLY">Monthly</option>
+          <option value="yearly" data-i18n="UI_REPEAT_YEARLY">Yearly</option>
+        </select>
+      </label>
+      <div class="row">
+        <label class="field grow">
+          <span data-i18n="UI_FIELD_ICON">Icon</span>
+          <span class="icon-input">
+            <i id="icon-preview" class="fa-solid fa-calendar-day fa-fw"></i>
+            <input type="text" name="icon" maxlength="60" placeholder="calendar-day" autocomplete="off" pattern="[A-Za-z0-9 \-]*">
+          </span>
+        </label>
+        <label class="field">
+          <span data-i18n="UI_FIELD_COLOR">Color</span>
+          <input type="color" name="color" value="#ffffff">
+        </label>
+      </div>
+      <p class="hint" data-i18n="UI_FIELD_ICON_HINT">Font Awesome name</p>
+      <div class="icon-picks" id="icon-picks"></div>
+      <label class="check"><input type="checkbox" name="showYears"> <span data-i18n="UI_FIELD_SHOW_YEARS">Show years</span></label>
+      <label class="check"><input type="checkbox" name="enabled" checked> <span data-i18n="UI_FIELD_ENABLED">Show on the mirror</span></label>
+      <p id="event-error" class="error" hidden></p>
+      <div class="actions">
+        <button class="btn" type="button" id="event-cancel" data-i18n="UI_CANCEL">Cancel</button>
+        <button class="btn primary" type="submit" data-i18n="UI_SAVE">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="token-dialog">
+    <form id="token-form" method="dialog">
+      <h2 data-i18n="UI_TOKEN_TITLE">Access key</h2>
+      <p class="hint" data-i18n="UI_TOKEN_HINT"></p>
+      <label class="field">
+        <span data-i18n="UI_TOKEN_TITLE">Access key</span>
+        <input type="password" name="token" required autocomplete="current-password">
+      </label>
+      <div class="actions">
+        <button class="btn primary" type="submit">OK</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="../core.js"></script>
+  <script src="config.js"></script>
+</body>
+</html>
